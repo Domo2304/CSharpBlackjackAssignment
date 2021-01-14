@@ -13,8 +13,26 @@ namespace S00209029_CA3
 
             Game game = new Game();
 
-            //game.DeckTest();
             game.StartGame();
+
+            //Asks if player wants to play another round of the game.
+            while (true)
+            {
+                Console.WriteLine("Do you want to play again - y/n?");
+                string input = Console.ReadLine();
+
+                if (input.ToLower().Equals("y"))
+                {
+                    Console.Clear();
+                    game.StartGame();
+
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
 
         }
     }

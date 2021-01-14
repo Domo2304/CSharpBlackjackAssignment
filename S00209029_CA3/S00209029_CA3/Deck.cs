@@ -12,16 +12,16 @@ namespace S00209029_CA3
         private List<Card> deck;
         public int CardsDrawn { get; set; }
         public bool IsEmpty { get; set; }
+        //DEBUGGING INT - REMOVE LATER!
+        public int TestCounter { get; set; }
 
+        //Constructtor for deck.
         public Deck()
         {
-           
-    
             deck = new List<Card>();
             FillDeck();
             ShuffleDeck();
             IsEmpty = false;
-
         }
 
         //Creates the cards and adds them to the deck.
@@ -40,8 +40,6 @@ namespace S00209029_CA3
                 deck.Add(diamond);
 
             }
-
-            
 
             string[] cardTypes = { "spades", "diamonds", "hearts", "clubs" };
 
@@ -77,7 +75,7 @@ namespace S00209029_CA3
         //Draws a card from the deck, if the deck is not empty
         public Card DrawCard()
         {
-            
+              
 
             if (CardsDrawn == deck.Count-1)
             {

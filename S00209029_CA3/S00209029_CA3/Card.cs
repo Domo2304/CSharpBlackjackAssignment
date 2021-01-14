@@ -30,16 +30,16 @@ namespace S00209029_CA3
 
             if (Suit.Contains("ace"))
             {
-                return String.Format("This card is a {0}. Its value is either 11 or 1", Suit, Value);
+                return String.Format("Card dealt is a {0}. Value is either 11 or 1.", Suit, Value);
             }
 
             if (Suit.Contains("of"))
             {
-                return String.Format("This card is a {0}. Its value is {1}", Suit, Value);
+                return String.Format("Card dealt is a {0}. Value is {1}.", Suit, Value);
             }
             
             
-            return String.Format("This card is a {0} of {1}. Its value is {2}", Value, Suit, Value);
+            return String.Format("Card dealt is is the {0} of {1}. Value is {2}.", Value, Suit, Value);
         }
 
     }
