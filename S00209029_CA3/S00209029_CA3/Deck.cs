@@ -12,8 +12,6 @@ namespace S00209029_CA3
         private List<Card> deck;
         public int CardsDrawn { get; set; }
         public bool IsEmpty { get; set; }
-        //DEBUGGING INT - REMOVE LATER!
-        public int TestCounter { get; set; }
 
         //Constructtor for deck.
         public Deck()
@@ -75,7 +73,20 @@ namespace S00209029_CA3
         //Draws a card from the deck, if the deck is not empty
         public Card DrawCard()
         {
-              
+            //DEGUG LINES
+            /*if(TestCounter == 0)
+            {
+                Card ace = new Card("ace of hearts", 11);
+                TestCounter++;
+                return ace;
+            }
+            //DEGUG LINES FOR GUARANTEED BLACKJACK ON PLAYER DRAW
+            if (TestCounter == 1)
+            {
+                Card myCard = new Card("ten of hearts", 10);
+                TestCounter++;
+                return myCard;
+            }*/
 
             if (CardsDrawn == deck.Count-1)
             {

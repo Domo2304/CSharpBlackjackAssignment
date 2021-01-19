@@ -18,10 +18,12 @@ namespace S00209029_CA3
 
 
         //starts the game
-        public void StartGame()
+        public int StartGame()
         {
             DealerBust = false;
             PlayerBust = false;
+            PlayerHasBlackJack = false;
+            DealerHasBlackJack = false;
 
             //Lists to represent the cards the player and dealer draw.
             DealersCards = new List<Card>();
@@ -66,11 +68,8 @@ namespace S00209029_CA3
                     while (true)
                     {
                         Card card = deck.DrawCard();
-                        
                        
-                        PlayersCards.Add(card);
-                        
-                        
+                        PlayersCards.Add(card);                        
                         Console.WriteLine(card);
 
                         Console.WriteLine("Your score is {0}.", CalculateCardValues(PlayersCards));
@@ -80,6 +79,13 @@ namespace S00209029_CA3
                         {
                             Console.WriteLine("You are bust.");
                             PlayerBust = true;
+                            DealersGo(deck);
+                            break;
+                        }
+
+                        //Foregoes asking player to stick or twist if there hand is valued at 21.
+                        if(CalculateCardValues(PlayersCards) == 21)
+                        {
                             DealersGo(deck);
                             break;
                         }
@@ -100,7 +106,8 @@ namespace S00209029_CA3
 
             }
             //Method for deciding who won the game.
-            DeclareWinner();
+            int result = DeclareWinner();
+            return result;
         }
 
         //Checks through the cards drawn by either the dealer or player to see if they have went bust
@@ -195,7 +202,7 @@ namespace S00209029_CA3
         //Simulates dealers turns in the game.
         private void DealersGo(Deck deck)
         {
-            Console.WriteLine("Dealer plays!\n");
+            Console.WriteLine("\nDealer plays!\n");
 
             //Dealer draws cards until either bust or they have reached atleast a hand value of 17.
             while (CalculateCardValues(DealersCards) <= 17)
@@ -250,54 +257,70 @@ namespace S00209029_CA3
         }
 
         //Calculates the winner.
-        private void DeclareWinner()
+        private int DeclareWinner()
         {
 
             int playerScore = CalculateCardValues(PlayersCards);
             int dealersScore = CalculateCardValues(DealersCards);
 
-            if (PlayerBust == false && DealerBust == true)
+
+            if (PlayerBust == false && DealerBust == true && PlayerHasBlackJack == false)
             {
                 Console.WriteLine("Player wins!");
-                return;
+                return 1;
+            }
+
+            if (PlayerBust == false && DealerBust == true && PlayerHasBlackJack == true)
+            {
+                Console.WriteLine("Player wins with BlackJack!");
+                return 2;
+            }
+
+            if (PlayerBust == false && DealerBust == false && PlayerHasBlackJack == true)
+            {
+                Console.WriteLine("Player wins with BlackJack!");
+                return 2;
             }
 
             if (PlayerBust)
             {
                 Console.WriteLine("Dealer wins!");
-                return;
+                return 0;
             }
 
             if (playerScore > dealersScore)
             {
                 Console.WriteLine("Player wins: {0} to {1}!", playerScore, dealersScore);
-                return;
+                return 1;
             }
 
             else if (dealersScore > playerScore)
             {
                 Console.WriteLine("Dealer wins: {0} to {1}!", dealersScore, playerScore);
-                return;
+                return 0;
             }
             else
             {
-                //In the event of a tie, it checks if one of the players has BlackJack and declares them the winner. If not, it announces a tie.
+                //In the event of a tie, it checks if one of the players has BlackJack and declares them the winner. If not, it announces a tie. Returns appropriate integer depending on the game state.
+                
                 Console.WriteLine("Player and dealer have equal score: {0}-{1}", dealersScore, playerScore);
-                if (DealerHasBlackJack && PlayerHasBlackJack != true)
+                if (DealerHasBlackJack == true && PlayerHasBlackJack != true)
                 {
                     Console.WriteLine("Dealer has BlackJack and player does not.");
                     Console.WriteLine("Dealer wins!");
+                    return 0;
                 }
 
                 else if (PlayerHasBlackJack && DealerHasBlackJack != true)
                 {
                     Console.WriteLine("Player has BlackJack and dealer does not.");
                     Console.WriteLine("Player wins!");
+                    return 2;
                 }
 
-                else if (PlayerHasBlackJack && DealerHasBlackJack) { Console.WriteLine("Dealer and player tie on BlackJack"); }
+                else if (PlayerHasBlackJack && DealerHasBlackJack) { Console.WriteLine("Dealer and player tie on BlackJack"); return 3; }
 
-                else { Console.WriteLine("Player and dealer tie!"); }
+                else { Console.WriteLine("Player and dealer tie!"); return 3; }
 
             }
         }
@@ -315,7 +338,7 @@ namespace S00209029_CA3
                     hasAce = true;
                 }
 
-                if (card.Value == 10)
+                else if (card.Value == 10)
                 {
                     hasTen = true;
                 }
